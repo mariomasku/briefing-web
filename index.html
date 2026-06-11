@@ -957,16 +957,21 @@
   const data = Object.fromEntries(formData.entries());
   
   try {
-    const response = await fetch(
-    "https://script.google.com/macros/s/AKfycbxhGQJFSbwL5MBnAlMNvFc0YDHmTQsKFSdvBbWKlM2k3BGpIeYq4zzuz3D1IYGBvG0-hw/exec",
-    {
-    method: "POST",
-    headers: {
-    "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }
-  );
+      const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbxhGQJFSbwL5MBnAlMNvFc0YDHmTQsKFSdvBbWKlM2k3BGpIeYq4zzuz3D1IYGBvG0-hw/exec",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      }
+    );
+  
+  console.log(response.status);
+  
+  const text = await response.text();
+  console.log(text);
   
   
   const result = await response.json();
@@ -984,13 +989,13 @@
   
   
   } catch (error) {
-  console.error(error);
+    console.error("ERROR COMPLETO:", error);
   
-  alert(
-    "Ha ocurrido un error al enviar el briefing. Inténtalo de nuevo."
-  );
-  
-  
+    alert(
+      "Error: " + error.message
+    );
+  }
+    
   }
   });
 
