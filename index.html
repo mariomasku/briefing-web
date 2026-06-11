@@ -1,1006 +1,1219 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Briefing de Proyecto Web</title>
-<style>
-  :root {
-    --bg: #F0F4F9;
-    --surface: #FFFFFF;
-    --border: #C8D8EA;
-    --border-focus: #1A5FA8;
-    --accent: #1A3F6F;
-    --accent-mid: #2563A8;
-    --accent-light: #E4EEF8;
-    --text: #0F1E33;
-    --text-muted: #4A6080;
-    --label: #1A3352;
-    --hint: #6E8BAA;
-    --section-num: #8AAECF;
-    --required: #C0392B;
-    --success: #1A6B3C;
-    --tag-bg: #E8F0FA;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  .doc-header {
-    background: var(--accent);
-    color: white;
-    padding: 48px 60px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-  .doc-header h1 {
-    font-size: 26px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-    line-height: 1.2;
-  }
-  .doc-header .meta {
-    font-size: 12px;
-    opacity: 0.6;
-    font-family: monospace;
-    text-align: right;
-    line-height: 1.8;
-  }
-  .doc-intro {
-    background: var(--accent-light);
-    padding: 16px 60px;
-    font-size: 13px;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .form-wrapper {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-
-  .section {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    margin-bottom: 32px;
-    border-radius: 4px;
-  }
-  .section-header {
-    padding: 20px 28px 18px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    background: var(--accent-light);
-    border-radius: 4px 4px 0 0;
-  }
-  .section-num {
-    font-family: monospace;
-    font-size: 11px;
-    color: var(--section-num);
-    letter-spacing: 1px;
-    flex-shrink: 0;
-  }
-  .section-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: -0.1px;
-  }
-  .section-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 3px;
-  }
-  .section-body {
-    padding: 28px 28px 24px;
-    display: grid;
-    gap: 22px;
-  }
-  .row-2 { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .row-3 { grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label {
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--label);
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-    margin-top: 6px;
-  }
-  .req { color: var(--required); margin-left: 2px; }
-  .hint {
-    font-size: 11.5px;
-    color: var(--hint);
-    font-style: italic;
-    line-height: 1.45;
-    margin-top: 1px;
-  }
-  input[type="text"],
-  input[type="email"],
-  input[type="tel"],
-  input[type="url"],
-  input[type="date"],
-  input[type="number"],
-  select,
-  textarea {
-    border: 1px solid var(--border);
-    background: var(--bg);
-    padding: 10px 12px;
-    font-size: 14px;
-    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
-    color: var(--text);
-    width: 100%;
-    outline: none;
-    transition: border-color 0.15s, background 0.15s;
-    border-radius: 3px;
-    appearance: none;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--border-focus);
-    background: #FFFFFF;
-    box-shadow: 0 0 0 3px rgba(37,99,168,0.1);
-  }
-  textarea { resize: vertical; min-height: 90px; }
-  select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236E8BAA'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 32px;
-  }
-
-  .check-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 2px;
-  }
-  .check-group label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--tag-bg);
-    border: 1px solid var(--border);
-    padding: 6px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    text-transform: none;
-    font-weight: normal;
-    letter-spacing: 0;
-    color: var(--text);
-    transition: background 0.1s, border-color 0.1s;
-    border-radius: 3px;
-    margin-top: 0;
-  }
-  .check-group input[type="checkbox"] { width: auto; accent-color: var(--accent-mid); }
-  .check-group label:has(input:checked) {
-    background: var(--accent-mid);
-    color: white;
-    border-color: var(--accent-mid);
-  }
-
-  .radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 2px;
-  }
-  .radio-group label {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--tag-bg);
-    border: 1px solid var(--border);
-    padding: 6px 14px;
-    font-size: 13px;
-    cursor: pointer;
-    text-transform: none;
-    font-weight: normal;
-    letter-spacing: 0;
-    color: var(--text);
-    border-radius: 3px;
-    transition: background 0.1s, border-color 0.1s;
-    margin-top: 0;
-  }
-  .radio-group input[type="radio"] { width: auto; accent-color: var(--accent-mid); }
-  .radio-group label:has(input:checked) {
-    background: var(--accent-mid);
-    color: white;
-    border-color: var(--accent-mid);
-  }
-
-  .subsection {
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
-    margin-top: 4px;
-  }
-  .subsection-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.9px;
-    color: var(--accent-mid);
-    font-weight: 700;
-    margin-bottom: 16px;
-  }
-
-  .submit-area { margin-top: 40px; text-align: center; }
-  .btn-submit {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 16px 48px;
-    font-size: 14px;
-    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: 600;
-    border-radius: 3px;
-    transition: background 0.15s;
-  }
-  .btn-submit:hover { background: var(--accent-mid); }
-  .submit-note { font-size: 12px; color: var(--hint); margin-top: 12px; }
-
-  .toolbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 60px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  .btn-print {
-    background: none;
-    border: 1px solid var(--border);
-    padding: 7px 18px;
-    font-size: 12px;
-    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
-    cursor: pointer;
-    color: var(--text-muted);
-    letter-spacing: 0.3px;
-    border-radius: 3px;
-  }
-  .btn-print:hover { background: var(--accent-light); color: var(--accent); }
-
-  .success-msg {
-    display: none;
-    background: #E6F4EC;
-    border: 1px solid #7DC4A0;
-    color: var(--success);
-    padding: 18px 24px;
-    font-size: 14px;
-    margin-top: 24px;
-    text-align: center;
-    border-radius: 3px;
-  }
-
-  @media (max-width: 640px) {
-    .doc-header { padding: 32px 20px 28px; flex-direction: column; gap: 12px; }
-    .doc-header .meta { text-align: left; }
-    .doc-intro { padding: 14px 20px; }
-    .section-body { padding: 20px 16px; }
-    .section-header { padding: 16px; }
-    .row-2, .row-3 { grid-template-columns: 1fr; }
-    .toolbar { padding: 10px 20px; }
-  }
-
-  @media print {
-    @page { size: A4; margin: 16mm 14mm 16mm 14mm; }
-
-    html, body {
-      background: white !important;
-      font-size: 10.5pt;
-      color: #000 !important;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Briefing de Proyecto Web</title>
+  <style>
+    :root {
+      --bg: #F0F4F9;
+      --surface: #FFFFFF;
+      --border: #C8D8EA;
+      --border-focus: #1A5FA8;
+      --accent: #1A3F6F;
+      --accent-mid: #2563A8;
+      --accent-light: #E4EEF8;
+      --text: #0F1E33;
+      --text-muted: #4A6080;
+      --label: #1A3352;
+      --hint: #6E8BAA;
+      --section-num: #8AAECF;
+      --required: #C0392B;
+      --success: #1A6B3C;
+      --tag-bg: #E8F0FA;
     }
 
-    .toolbar, .btn-submit, .submit-area, .success-msg { display: none !important; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
 
     .doc-header {
-      background: #1A3F6F !important;
-      color: white !important;
-      padding: 16px 20px 14px;
-      break-inside: avoid;
-      page-break-inside: avoid;
+      background: var(--accent);
+      color: white;
+      padding: 48px 60px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
     }
+
+    .doc-header h1 {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .doc-header .meta {
+      font-size: 12px;
+      opacity: 0.6;
+      font-family: monospace;
+      text-align: right;
+      line-height: 1.8;
+    }
+
     .doc-intro {
-      background: #E4EEF8 !important;
-      padding: 9px 20px;
-      font-size: 9.5pt;
-      break-inside: avoid;
-      page-break-inside: avoid;
+      background: var(--accent-light);
+      padding: 16px 60px;
+      font-size: 13px;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
     }
-    .form-wrapper { padding: 14px 0 0; max-width: 100%; }
 
-    /* Cada seccion entera en la misma pagina */
+    .form-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
     .section {
-      break-inside: avoid;
-      page-break-inside: avoid;
-      border: 1px solid #C8D8EA !important;
-      border-radius: 0 !important;
-      margin-bottom: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 32px;
+      border-radius: 4px;
     }
+
     .section-header {
-      break-after: avoid;
-      page-break-after: avoid;
-      background: #E4EEF8 !important;
-      padding: 9px 14px;
-      border-radius: 0 !important;
+      padding: 20px 28px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      background: var(--accent-light);
+      border-radius: 4px 4px 0 0;
     }
-    .section-body { padding: 12px 14px; gap: 12px; }
-    .subsection { break-inside: avoid; page-break-inside: avoid; }
 
-    .section-title { color: #1A3F6F !important; font-size: 11pt; }
-    .section-num { color: #8AAECF !important; }
-    .section-desc, .hint { color: #4A6080 !important; }
-    .field label { color: #1A3352 !important; }
-    .subsection-title { color: #2563A8 !important; }
-
-    input[type="text"], input[type="email"], input[type="tel"],
-    input[type="url"], input[type="date"], input[type="number"],
-    select, textarea {
-      background: #F5F8FC !important;
-      border: 1px solid #C8D8EA !important;
-      font-size: 9.5pt;
-      min-height: 24px;
-      border-radius: 0 !important;
-      box-shadow: none !important;
+    .section-num {
+      font-family: monospace;
+      font-size: 11px;
+      color: var(--section-num);
+      letter-spacing: 1px;
+      flex-shrink: 0;
     }
-    textarea { min-height: 44px; }
 
-    .check-group label, .radio-group label {
-      background: #E8F0FA !important;
-      border: 1px solid #C8D8EA !important;
-      color: #0F1E33 !important;
-      font-size: 9.5pt;
-      padding: 3px 9px;
-      border-radius: 0 !important;
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.1px;
     }
-    .check-group label:has(input:checked),
+
+    .section-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .section-body {
+      padding: 28px 28px 24px;
+      display: grid;
+      gap: 22px;
+    }
+
+    .row-2 {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .row-3 {
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--label);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      margin-top: 6px !important;
+    }
+
+    .req {
+      color: var(--required);
+      margin-left: 2px;
+    }
+
+    .hint {
+      font-size: 11.5px;
+      color: var(--hint);
+      font-style: italic;
+      line-height: 1.45;
+      margin-top: 1px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+      border: 1px solid var(--border);
+      background: var(--bg);
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      border-radius: 3px;
+      appearance: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--border-focus);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(37, 99, 168, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236E8BAA'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
+
+    .check-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .check-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      text-transform: none;
+      font-weight: normal;
+      letter-spacing: 0;
+      color: var(--text);
+      transition: background 0.1s, border-color 0.1s;
+      border-radius: 3px;
+      margin-top: 0;
+    }
+
+    .check-group input[type="checkbox"] {
+      width: auto;
+      accent-color: var(--accent-mid);
+    }
+
+    .check-group label:has(input:checked) {
+      background: var(--accent-mid);
+      color: white;
+      border-color: var(--accent-mid);
+    }
+
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      text-transform: none;
+      font-weight: normal;
+      letter-spacing: 0;
+      color: var(--text);
+      border-radius: 3px;
+      transition: background 0.1s, border-color 0.1s;
+      margin-top: 0;
+    }
+
+    .radio-group input[type="radio"] {
+      width: auto;
+      accent-color: var(--accent-mid);
+    }
+
     .radio-group label:has(input:checked) {
-      background: #2563A8 !important;
-      color: white !important;
-      border-color: #2563A8 !important;
+      background: var(--accent-mid);
+      color: white;
+      border-color: var(--accent-mid);
     }
-    .row-2 { grid-template-columns: 1fr 1fr; }
-    .row-3 { grid-template-columns: 1fr 1fr 1fr; }
-  }
-</style>
+
+    .subsection {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      margin-top: 4px;
+    }
+
+    .subsection-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--accent-mid);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .submit-area {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .btn-submit {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 16px 48px;
+      font-size: 14px;
+      font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-weight: 600;
+      border-radius: 3px;
+      transition: background 0.15s;
+    }
+
+    .btn-submit:hover {
+      background: var(--accent-mid);
+    }
+
+    .submit-note {
+      font-size: 12px;
+      color: var(--hint);
+      margin-top: 12px;
+    }
+
+    .toolbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 60px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-print {
+      background: none;
+      border: 1px solid var(--border);
+      padding: 7px 18px;
+      font-size: 12px;
+      font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+      cursor: pointer;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+      border-radius: 3px;
+    }
+
+    .btn-print:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .success-msg {
+      display: none;
+      background: #E6F4EC;
+      border: 1px solid #7DC4A0;
+      color: var(--success);
+      padding: 18px 24px;
+      font-size: 14px;
+      margin-top: 24px;
+      text-align: center;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 640px) {
+      .doc-header {
+        padding: 32px 20px 28px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .doc-header .meta {
+        text-align: left;
+      }
+
+      .doc-intro {
+        padding: 14px 20px;
+      }
+
+      .section-body {
+        padding: 20px 16px;
+      }
+
+      .section-header {
+        padding: 16px;
+      }
+
+      .row-2,
+      .row-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        padding: 10px 20px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 16mm 14mm 16mm 14mm;
+      }
+
+      html,
+      body {
+        background: white !important;
+        font-size: 10.5pt;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .toolbar,
+      .btn-submit,
+      .submit-area,
+      .success-msg {
+        display: none !important;
+      }
+
+      .doc-header {
+        background: #1A3F6F !important;
+        color: white !important;
+        padding: 16px 20px 14px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .doc-intro {
+        background: #E4EEF8 !important;
+        padding: 9px 20px;
+        font-size: 9.5pt;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .form-wrapper {
+        padding: 14px 0 0;
+        max-width: 100%;
+      }
+
+      /* Cada seccion entera en la misma pagina */
+      .section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border: 1px solid #C8D8EA !important;
+        border-radius: 0 !important;
+        margin-bottom: 14px;
+      }
+
+      .section-header {
+        break-after: avoid;
+        page-break-after: avoid;
+        background: #E4EEF8 !important;
+        padding: 9px 14px;
+        border-radius: 0 !important;
+      }
+
+      .section-body {
+        padding: 12px 14px;
+        gap: 12px;
+      }
+
+      .subsection {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .section-title {
+        color: #1A3F6F !important;
+        font-size: 11pt;
+      }
+
+      .section-num {
+        color: #8AAECF !important;
+      }
+
+      .section-desc,
+      .hint {
+        color: #4A6080 !important;
+      }
+
+      .field label {
+        color: #1A3352 !important;
+      }
+
+      .subsection-title {
+        color: #2563A8 !important;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="url"],
+      input[type="date"],
+      input[type="number"],
+      select,
+      textarea {
+        background: #F5F8FC !important;
+        border: 1px solid #C8D8EA !important;
+        font-size: 9.5pt;
+        min-height: 24px;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+
+      textarea {
+        min-height: 44px;
+      }
+
+      .check-group label,
+      .radio-group label {
+        background: #E8F0FA !important;
+        border: 1px solid #C8D8EA !important;
+        color: #0F1E33 !important;
+        font-size: 9.5pt;
+        padding: 3px 9px;
+        border-radius: 0 !important;
+      }
+
+      .check-group label:has(input:checked),
+      .radio-group label:has(input:checked) {
+        background: #2563A8 !important;
+        color: white !important;
+        border-color: #2563A8 !important;
+      }
+
+      .row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .row-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="doc-header">
-  <div>
-    <h1>Briefing de Proyecto Web</h1>
-    <div style="margin-top:6px; font-size:13px; opacity:0.55;">Documento de toma de requisitos — Uso interno</div>
-  </div>
-  <div class="meta">
-    <span id="ref-code">REF: —</span><br>
-    <span id="today-date">Fecha: —</span>
-  </div>
-</header>
-
-<div class="toolbar">
-  <button class="btn-print" onclick="window.print()">&#x2399; Imprimir / Guardar PDF</button>
-</div>
-
-<div class="doc-intro">
-  Este documento es confidencial y se utiliza exclusivamente para la planificación del proyecto. Completa todos los campos obligatorios (<span style="color:var(--required)">*</span>). Cuanta más información aportes, más preciso será el trabajo.
-</div>
-
-<div class="form-wrapper">
-<form id="briefing-form" novalidate>
-
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">00</span>
-      <div>
-        <div class="section-title">Datos Generales del Proyecto</div>
-        <div class="section-desc">Identificación del cliente y datos administrativos del encargo.</div>
-      </div>
+  <header class="doc-header">
+    <div>
+      <h1>Briefing de Proyecto Web</h1>
+      <div style="margin-top:6px; font-size:13px; opacity:0.55;">Documento de toma de requisitos — Uso interno</div>
     </div>
-    <div class="section-body">
-      <div class="row-2">
-        <div class="field"><label>Nombre del cliente / empresa <span class="req">*</span></label><input type="text" name="cliente_nombre" placeholder="Ej. Deportes Atlántico S.L."></div>
-        <div class="field"><label>CIF / NIF</label><input type="text" name="cliente_cif" placeholder="Ej. B12345678"></div>
-      </div>
-      <div class="row-3">
-        <div class="field"><label>Persona de contacto <span class="req">*</span></label><input type="text" name="contacto_nombre" placeholder="Ej. Ana García Ruiz"></div>
-        <div class="field"><label>Teléfono de contacto <span class="req">*</span></label><input type="tel" name="contacto_telefono" placeholder="Ej. +34 612 345 678"></div>
-        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" name="contacto_email" placeholder="ana@empresa.com"></div>
-      </div>
-      <div class="row-2">
-        <div class="field"><label>Nombre del proyecto</label><input type="text" name="proyecto_nombre" placeholder="Ej. Web corporativa Deportes Atlántico"></div>
-        <div class="field"><label>Fecha estimada de entrega</label><input type="date" name="proyecto_fecha"></div>
-      </div>
-      <div class="field">
-        <label>Servicios contratados <span class="req">*</span></label>
-        <span class="hint">Marca todos los servicios incluidos en este encargo.</span>
-        <div class="check-group">
-          <label><input type="checkbox" name="servicio[]" value="identidad_visual"> Identidad Visual + Manual</label>
-          <label><input type="checkbox" name="servicio[]" value="prototipado"> Prototipado web</label>
-          <label><input type="checkbox" name="servicio[]" value="keyword_research"> Keyword Research</label>
-          <label><input type="checkbox" name="servicio[]" value="diseno_web"> Diseño web</label>
-          <label><input type="checkbox" name="servicio[]" value="secciones_custom"> Secciones personalizadas</label>
-          <label><input type="checkbox" name="servicio[]" value="desarrollo_wp"> Desarrollo WordPress</label>
-          <label><input type="checkbox" name="servicio[]" value="tienda_online"> Tienda online (WooCommerce)</label>
-          <label><input type="checkbox" name="servicio[]" value="seo"> SEO On-Page</label>
-          <label><input type="checkbox" name="servicio[]" value="mantenimiento"> Mantenimiento</label>
-          <label><input type="checkbox" name="servicio[]" value="otro"> Otro</label>
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>Presupuesto aprobado (€) <span class="req">*</span></label>
-          <span class="hint">Importe total acordado sin IVA.</span>
-          <input type="number" name="presupuesto" placeholder="Ej. 2400">
-        </div>
-        <div class="field">
-          <label>¿Existe web actual?</label>
-          <div class="radio-group">
-            <label><input type="radio" name="web_actual" value="no"> No, es nueva</label>
-            <label><input type="radio" name="web_actual" value="si_mantener"> Sí, se migra</label>
-            <label><input type="radio" name="web_actual" value="si_rediseno"> Sí, se rediseña</label>
-          </div>
-        </div>
-      </div>
-      <div class="field" id="web-actual-url-wrap" style="display:none">
-        <label>URL de la web actual</label>
-        <input type="url" name="web_actual_url" placeholder="https://www.empresa.com">
-      </div>
+    <div class="meta">
+      <span id="ref-code">REF: —</span><br>
+      <span id="today-date">Fecha: —</span>
     </div>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn-print" onclick="window.print()">&#x2399; Imprimir / Guardar PDF</button>
   </div>
 
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">01</span>
-      <div>
-        <div class="section-title">Contexto del Negocio</div>
-        <div class="section-desc">Entender qué hace la empresa, cómo gana dinero y dónde quiere llegar.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="field">
-        <label>Descripción del negocio <span class="req">*</span></label>
-        <span class="hint">¿A qué se dedica la empresa? Descríbelo como si se lo explicaras a alguien que no conoce el sector. Ej: "Somos un estudio de arquitectura especializado en rehabilitación de viviendas en Córdoba."</span>
-        <textarea name="negocio_descripcion" rows="4"></textarea>
-      </div>
-      <div class="field">
-        <label>¿Cuánto tiempo lleva en funcionamiento?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="antiguedad" value="nueva"> Es nueva (aún no ha abierto)</label>
-          <label><input type="radio" name="antiguedad" value="menos1"> Menos de 1 año</label>
-          <label><input type="radio" name="antiguedad" value="1a3"> Entre 1 y 3 años</label>
-          <label><input type="radio" name="antiguedad" value="mas3"> Más de 3 años</label>
-        </div>
-      </div>
-      <div class="field">
-        <label>Servicios o productos principales <span class="req">*</span></label>
-        <span class="hint">Lista los 3–5 servicios o productos que más ingresos generan o que quieres destacar. Ej: "1. Clases de yoga en grupo · 2. Sesiones individuales de pilates · 3. Bono mensual ilimitado"</span>
-        <textarea name="servicios_principales" rows="4"></textarea>
-      </div>
-      <div class="field">
-        <label>Servicio o producto estrella</label>
-        <span class="hint">Si tuvieras que elegir solo uno que la web debe comunicar con máxima claridad, ¿cuál sería?</span>
-        <input type="text" name="servicio_core">
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>Modelo de negocio principal</label>
-          <div class="radio-group" style="flex-direction:column; gap:6px;">
-            <label><input type="radio" name="modelo_negocio" value="b2c"> B2C — vende a particulares</label>
-            <label><input type="radio" name="modelo_negocio" value="b2b"> B2B — vende a empresas</label>
-            <label><input type="radio" name="modelo_negocio" value="ambos"> Ambos</label>
-            <label><input type="radio" name="modelo_negocio" value="otro"> Otro</label>
-          </div>
-        </div>
-        <div class="field">
-          <label>¿La empresa genera ingresos online actualmente?</label>
-          <div class="radio-group" style="flex-direction:column; gap:6px;">
-            <label><input type="radio" name="ingresos_online" value="no"> No, todo es presencial/offline</label>
-            <label><input type="radio" name="ingresos_online" value="algo"> Algo (redes, marketplaces…)</label>
-            <label><input type="radio" name="ingresos_online" value="si"> Sí, la web es canal principal</label>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="doc-intro">
+    Este documento es confidencial y se utiliza exclusivamente para la planificación del proyecto. Completa todos los
+    campos obligatorios (<span style="color:var(--required)">*</span>). Cuanta más información aportes, más preciso será
+    el trabajo.
   </div>
 
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">02</span>
-      <div>
-        <div class="section-title">Público Objetivo y Mercado</div>
-        <div class="section-desc">Quién compra, dónde está y contra quién compite.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="field">
-        <label>Perfil del cliente ideal <span class="req">*</span></label>
-        <span class="hint">Describe a tu cliente tipo: edad aproximada, situación, motivación, qué problema tiene antes de encontrarte. Ej: "Mujer de 35–50 años, con trabajo, poco tiempo libre, que quiere ponerse en forma."</span>
-        <textarea name="cliente_ideal" rows="4"></textarea>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>Ámbito geográfico <span class="req">*</span></label>
-          <div class="check-group" style="flex-direction:column; gap:6px;">
-            <label><input type="checkbox" name="ambito[]" value="local"> Local (ciudad o provincia)</label>
-            <label><input type="checkbox" name="ambito[]" value="nacional"> Nacional (España)</label>
-            <label><input type="checkbox" name="ambito[]" value="hispanohablante"> Hispanohablante (Latinoamérica)</label>
-            <label><input type="checkbox" name="ambito[]" value="internacional"> Internacional (otros idiomas)</label>
-          </div>
-        </div>
-        <div class="field">
-          <label>Idiomas necesarios en la web</label>
-          <div class="check-group" style="flex-direction:column; gap:6px;">
-            <label><input type="checkbox" name="idiomas[]" value="es"> Español</label>
-            <label><input type="checkbox" name="idiomas[]" value="en"> Inglés</label>
-            <label><input type="checkbox" name="idiomas[]" value="fr"> Francés</label>
-            <label><input type="checkbox" name="idiomas[]" value="de"> Alemán</label>
-            <label><input type="checkbox" name="idiomas[]" value="otro"> Otro</label>
-          </div>
-        </div>
-      </div>
-      <div class="field">
-        <label>Competidores directos</label>
-        <span class="hint">Nombra 2–4 empresas o webs que hacen lo mismo. Incluye la URL si puedes.</span>
-        <textarea name="competidores_directos" rows="3"></textarea>
-      </div>
-      <div class="field">
-        <label>Referentes o competidores aspiracionales</label>
-        <span class="hint">¿A qué empresa o web le gustaría parecerse, aunque no sea competencia directa? ¿Por qué?</span>
-        <textarea name="competidores_aspiracionales" rows="3"></textarea>
-      </div>
-      <div class="field">
-        <label>Ventaja competitiva real <span class="req">*</span></label>
-        <span class="hint">¿Por qué un cliente debería elegirte? Sé concreto, evita "mejor calidad" o "más experiencia". Ej: "Somos los únicos en la ciudad que ofrecemos clases en grupos de máximo 6 personas."</span>
-        <textarea name="ventaja_competitiva" rows="3"></textarea>
-      </div>
-    </div>
-  </div>
+  <div class="form-wrapper">
+    <form id="briefing-form" novalidate>
 
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <div>
-        <div class="section-title">Estrategia de Marca</div>
-        <div class="section-desc">Posicionamiento, valores y lo que la marca debe y no debe comunicar.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="field">
-        <label>Problema principal que resuelve la marca <span class="req">*</span></label>
-        <span class="hint">No el producto, sino el problema del cliente. Ej: "Los viajeros pierden horas buscando información dispersa para organizar un viaje para ver a su equipo."</span>
-        <textarea name="problema_resuelve" rows="3"></textarea>
-      </div>
-      <div class="field">
-        <label>¿Qué lugar debe ocupar en la mente del cliente?</label>
-        <span class="hint">Completa: "Cuando alguien piensa en [categoría], quiero que piense primero en nosotros porque ___."</span>
-        <textarea name="posicionamiento_mente" rows="3"></textarea>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>Tres atributos que DEBEN definir la marca</label>
-          <span class="hint">Ej: Fiable · Cercano · Experto</span>
-          <input type="text" name="atributos_positivos" placeholder="Ej. Profesional · Innovador · Humano">
-        </div>
-        <div class="field">
-          <label>Atributos que NUNCA debe transmitir</label>
-          <span class="hint">Ej: "No debe parecer una agencia de viajes masiva y fría."</span>
-          <input type="text" name="atributos_negativos" placeholder="Ej. Genérico · Barato · Complicado">
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>¿Por qué existe la empresa más allá de vender?</label>
-          <span class="hint">El propósito de fondo. Ej: "Creemos que el deporte en vivo es una experiencia que cambia personas."</span>
-          <textarea name="proposito" rows="3"></textarea>
-        </div>
-        <div class="field">
-          <label>¿Qué promesa hace la marca a sus clientes?</label>
-          <span class="hint">En una frase. Ej: "Te ayudamos a vivir el partido, no solo a verlo."</span>
-          <textarea name="promesa" rows="3"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">04</span>
-      <div>
-        <div class="section-title">Identidad Visual</div>
-        <div class="section-desc">Nombre, logo, colores y la estética que se quiere comunicar.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="row-2">
-        <div class="field">
-          <label>¿Se mantiene el nombre actual de la marca?</label>
-          <div class="radio-group">
-            <label><input type="radio" name="mantiene_nombre" value="si"> Sí</label>
-            <label><input type="radio" name="mantiene_nombre" value="no"> No, se cambia</label>
-            <label><input type="radio" name="mantiene_nombre" value="nueva"> Marca nueva</label>
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">00</span>
+          <div>
+            <div class="section-title">Datos Generales del Proyecto</div>
+            <div class="section-desc">Identificación del cliente y datos administrativos del encargo.</div>
           </div>
         </div>
-        <div class="field">
-          <label>¿Se plantea lema o eslogan?</label>
-          <input type="text" name="eslogan" placeholder="Ej. Tu viaje, tu partido, tu historia.">
-          <span class="hint">Déjalo vacío si aún no está definido.</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>¿Se dispone de logo o identidad visual existente?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="logo_estado" value="si_ok"> Sí, y se quiere mantener</label>
-          <label><input type="radio" name="logo_estado" value="si_renovar"> Sí, pero se quiere renovar</label>
-          <label><input type="radio" name="logo_estado" value="no"> No, se crea desde cero</label>
-        </div>
-      </div>
-      <div class="field">
-        <label>Sensaciones que debe transmitir la marca visualmente <span class="req">*</span></label>
-        <span class="hint">Elige varias o escribe las tuyas. Ej: "Moderna y limpia, sin perder calidez."</span>
-        <div class="check-group">
-          <label><input type="checkbox" name="sensaciones[]" value="profesional"> Profesional</label>
-          <label><input type="checkbox" name="sensaciones[]" value="moderno"> Moderno</label>
-          <label><input type="checkbox" name="sensaciones[]" value="calido"> Cálido</label>
-          <label><input type="checkbox" name="sensaciones[]" value="divertido"> Dinámico / Enérgico</label>
-          <label><input type="checkbox" name="sensaciones[]" value="lujo"> Premium / Exclusivo</label>
-          <label><input type="checkbox" name="sensaciones[]" value="minimalista"> Minimalista</label>
-          <label><input type="checkbox" name="sensaciones[]" value="cercano"> Cercano / Humano</label>
-          <label><input type="checkbox" name="sensaciones[]" value="tecnologico"> Tecnológico</label>
-          <label><input type="checkbox" name="sensaciones[]" value="natural"> Natural / Ecológico</label>
-          <label><input type="checkbox" name="sensaciones[]" value="otro"> Otro:</label>
-        </div>
-        <input type="text" name="sensaciones_otro" placeholder="Describe otras sensaciones…" style="margin-top:8px;">
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>Colores que considera afines a la marca</label>
-          <span class="hint">Nombres, referencias o hex. Ej: "Azul marino, blanco y un toque de naranja." o "#003366"</span>
-          <input type="text" name="colores_afines" placeholder="Ej. Azul oscuro, blanco, naranja vibrante">
-        </div>
-        <div class="field">
-          <label>Colores a evitar</label>
-          <span class="hint">Ej: "Nada de verdes o amarillos chillones. El rojo me parece agresivo."</span>
-          <input type="text" name="colores_evitar" placeholder="Ej. Rojo, verde, colores muy saturados">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">05</span>
-      <div>
-        <div class="section-title">Diseño Web</div>
-        <div class="section-desc">Objetivos, estructura y estética de la web.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="field">
-        <label>Papel de la web en el negocio <span class="req">*</span></label>
-        <div class="radio-group" style="flex-direction:column; gap:6px;">
-          <label><input type="radio" name="papel_web" value="brochure"> Escaparate / Presencia online (nadie compra, solo busca información)</label>
-          <label><input type="radio" name="papel_web" value="captacion"> Captación de leads (el objetivo es que el usuario contacte)</label>
-          <label><input type="radio" name="papel_web" value="venta"> Venta directa online (e-commerce o reservas)</label>
-          <label><input type="radio" name="papel_web" value="seo"> Posicionamiento SEO y contenido (blog, guías, tráfico orgánico)</label>
-          <label><input type="radio" name="papel_web" value="mixto"> Mixto (varios de los anteriores)</label>
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label>Objetivo principal de la web (uno) <span class="req">*</span></label>
-          <span class="hint">Si solo pudiera ocurrir una cosa cuando alguien visita la web, ¿cuál sería?</span>
-          <textarea name="objetivo_web" rows="3"></textarea>
-        </div>
-        <div class="field">
-          <label>Acción clave que debe realizar el usuario <span class="req">*</span></label>
-          <span class="hint">¿Qué botón o acción concreta debe pulsar? Ej: "Reservar cita", "Pedir presupuesto", "Comprar".</span>
-          <textarea name="accion_clave" rows="3"></textarea>
-        </div>
-      </div>
-      <div class="field">
-        <label>Secciones o páginas que debe tener la web</label>
-        <span class="hint">Indica las que sabes seguro que necesita. Si tiene dudas, déjalo en blanco.</span>
-        <textarea name="secciones_web" rows="3" placeholder="Ej. Home · Servicios · Quiénes somos · Blog · Contacto · Aviso Legal · RGPD"></textarea>
-      </div>
-      <div class="field">
-        <label>Webs de referencia estética <span class="req">*</span></label>
-        <span class="hint">Pon 2–3 URLs de webs cuyo diseño te guste. No hace falta que sean de tu competencia.</span>
-        <textarea name="referencias_estetica" rows="3" placeholder="Ej. https://linear.app · https://framer.com"></textarea>
-      </div>
-      <div class="field">
-        <label>Preferencias de estética visual general</label>
-        <div class="check-group">
-          <label><input type="checkbox" name="estetica[]" value="minimalista"> Minimalista, mucho espacio en blanco</label>
-          <label><input type="checkbox" name="estetica[]" value="fotografica"> Protagonismo de la fotografía</label>
-          <label><input type="checkbox" name="estetica[]" value="colorido"> Colorido y vibrante</label>
-          <label><input type="checkbox" name="estetica[]" value="corporativo"> Corporativo y formal</label>
-          <label><input type="checkbox" name="estetica[]" value="organico"> Orgánico, texturas naturales</label>
-          <label><input type="checkbox" name="estetica[]" value="dark"> Dark mode / fondo oscuro</label>
-          <label><input type="checkbox" name="estetica[]" value="animado"> Con animaciones y movimiento</label>
-        </div>
-      </div>
-      <div class="field">
-        <label>Contenido disponible actualmente</label>
-        <span class="hint">Marca lo que ya tienes listo para entregar al inicio del proyecto.</span>
-        <div class="check-group">
-          <label><input type="checkbox" name="contenido[]" value="textos"> Textos escritos</label>
-          <label><input type="checkbox" name="contenido[]" value="fotos"> Fotografías propias</label>
-          <label><input type="checkbox" name="contenido[]" value="logo"> Logo en alta resolución</label>
-          <label><input type="checkbox" name="contenido[]" value="manual_marca"> Manual de marca</label>
-          <label><input type="checkbox" name="contenido[]" value="videos"> Vídeos</label>
-          <label><input type="checkbox" name="contenido[]" value="nada"> Nada, se crea todo desde cero</label>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">06</span>
-      <div>
-        <div class="section-title">Requisitos Técnicos y de Desarrollo</div>
-        <div class="section-desc">Funcionalidades, integraciones y necesidades de infraestructura.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="subsection">
-        <div class="subsection-title">Funcionalidades</div>
-        <div class="field">
-          <label>¿Qué funcionalidades debe incluir la web? <span class="req">*</span></label>
-          <span class="hint">Marca todo lo que necesites, aunque no estés seguro de si está incluido en el presupuesto.</span>
-          <div class="check-group">
-            <label><input type="checkbox" name="funcionalidades[]" value="formulario_contacto"> Formulario de contacto</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="formulario_presupuesto"> Formulario de solicitud de presupuesto</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="blog"> Blog / noticias</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="tienda"> Tienda online (e-commerce)</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="reservas"> Sistema de reservas o citas</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="buscador"> Buscador interno</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="chat"> Chat en tiempo real</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="newsletter"> Suscripción a newsletter</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="area_privada"> Área privada / login de usuarios</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="mapa"> Mapa interactivo</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="galeria"> Galería de proyectos / portfolio</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="comparador"> Comparador de productos</label>
-            <label><input type="checkbox" name="funcionalidades[]" value="multiidioma"> Web multiidioma</label>
+        <div class="section-body">
+          <div class="row-2">
+            <div class="field"><label>Nombre del cliente / empresa <span class="req">*</span></label><input type="text"
+                name="cliente_nombre" placeholder="Ej. Deportes Atlántico S.L."></div>
           </div>
-        </div>
-      </div>
-      <div class="subsection">
-        <div class="subsection-title">Integraciones externas</div>
-        <div class="field">
-          <label>¿Necesita integrarse con herramientas externas?</label>
-          <span class="hint">Indica qué herramientas usáis ya en el negocio. Ej: "Usamos Mailchimp para newsletters y HubSpot como CRM."</span>
-          <div class="check-group">
-            <label><input type="checkbox" name="integraciones[]" value="crm"> CRM (HubSpot, Salesforce…)</label>
-            <label><input type="checkbox" name="integraciones[]" value="email_marketing"> Email marketing (Mailchimp, Brevo…)</label>
-            <label><input type="checkbox" name="integraciones[]" value="pasarela_pago"> Pasarela de pago (Stripe, PayPal, Redsys…)</label>
-            <label><input type="checkbox" name="integraciones[]" value="erp"> ERP / facturación</label>
-            <label><input type="checkbox" name="integraciones[]" value="reservas_externas"> Plataforma de reservas (Calendly, Bookly…)</label>
-            <label><input type="checkbox" name="integraciones[]" value="google_analytics"> Google Analytics / Tag Manager</label>
-            <label><input type="checkbox" name="integraciones[]" value="redes_sociales"> Feed de redes sociales</label>
-            <label><input type="checkbox" name="integraciones[]" value="whatsapp"> WhatsApp Business</label>
-            <label><input type="checkbox" name="integraciones[]" value="ninguna"> Ninguna por ahora</label>
+          <div class="row-3">
+            <div class="field"><label>Persona de contacto <span class="req">*</span></label><input type="text"
+                name="contacto_nombre" placeholder="Ej. Nombre Apellido1 Apellido2"></div>
+            <div class="field"><label>Teléfono de contacto <span class="req">*</span></label><input type="tel"
+                name="contacto_telefono" placeholder="Ej. +34 612 345 678"></div>
+            <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email"
+                name="contacto_email" placeholder="info@empresa.com"></div>
           </div>
-        </div>
-        <div class="field" style="margin-top:12px;">
-          <label>Detalla las integraciones necesarias</label>
-          <textarea name="integraciones_detalle" rows="2" placeholder="Ej. Tenemos Mailchimp con 3000 suscriptores y queremos sincronizarlo con el formulario de la web."></textarea>
-        </div>
-      </div>
-      <div class="subsection">
-        <div class="subsection-title">Tienda online (si aplica)</div>
-        <div class="row-3">
-          <div class="field"><label>Número aprox. de productos</label><input type="number" name="num_productos" placeholder="Ej. 50"></div>
-          <div class="field"><label>¿Gestión de stock?</label><div class="radio-group"><label><input type="radio" name="gestion_stock" value="si"> Sí</label><label><input type="radio" name="gestion_stock" value="no"> No</label></div></div>
-          <div class="field"><label>¿Envío físico de productos?</label><div class="radio-group"><label><input type="radio" name="envio_fisico" value="si"> Sí</label><label><input type="radio" name="envio_fisico" value="no"> No (digital/servicio)</label></div></div>
-        </div>
-      </div>
-      <div class="subsection">
-        <div class="subsection-title">Infraestructura</div>
-        <div class="row-2">
+          <div class="row-2">
+            <div class="field"><label>Nombre del proyecto</label><input type="text" name="proyecto_nombre"
+                placeholder="Ej. Web corporativa Deportes Atlántico"></div>
+            <div class="field"><label>Fecha estimada de entrega</label><input type="date" name="proyecto_fecha"></div>
+          </div>
           <div class="field">
-            <label>¿Necesita servicio de hosting?</label>
+            <label>Servicios requeridos <span class="req">*</span></label>
+            <span class="hint">Marca todos los servicios incluidos en este encargo.</span>
+            <div class="check-group">
+              <label><input type="checkbox" name="servicio[]" value="identidad_visual"> Identidad Visual +
+                Manual</label>
+              <label><input type="checkbox" name="servicio[]" value="prototipado"> Prototipado web</label>
+              <label><input type="checkbox" name="servicio[]" value="keyword_research"> Keyword Research</label>
+              <label><input type="checkbox" name="servicio[]" value="diseno_web"> Diseño web</label>
+              <label><input type="checkbox" name="servicio[]" value="secciones_custom"> Secciones personalizadas</label>
+              <label><input type="checkbox" name="servicio[]" value="desarrollo_wp"> Desarrollo WordPress</label>
+              <label><input type="checkbox" name="servicio[]" value="tienda_online"> Tienda online (WooCommerce)</label>
+              <label><input type="checkbox" name="servicio[]" value="seo"> SEO On-Page</label>
+              <label><input type="checkbox" name="servicio[]" value="mantenimiento"> Mantenimiento</label>
+              <label><input type="checkbox" name="servicio[]" value="otro"> Otro</label>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>¿Existe web actual?</label>
+              <div class="radio-group">
+                <label><input type="radio" name="web_actual" value="no"> No, es nueva</label>
+                <label><input type="radio" name="web_actual" value="si_mantener"> Sí, se migra</label>
+                <label><input type="radio" name="web_actual" value="si_rediseno"> Sí, se rediseña</label>
+              </div>
+            </div>
+          </div>
+          <div class="field" id="web-actual-url-wrap" style="display:none">
+            <label>URL de la web actual</label>
+            <input type="url" name="web_actual_url" placeholder="https://www.empresa.com">
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">01</span>
+          <div>
+            <div class="section-title">Contexto del Negocio</div>
+            <div class="section-desc">Entender qué hace la empresa, cómo gana dinero y dónde quiere llegar.</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label>Descripción del negocio <span class="req">*</span></label>
+            <span class="hint">¿A qué se dedica la empresa? Descríbelo como si se lo explicaras a alguien que no conoce
+              el sector. Ej: "Somos un estudio de arquitectura especializado en rehabilitación de viviendas en
+              Córdoba."</span>
+            <textarea name="negocio_descripcion" rows="4"></textarea>
+          </div>
+          <div class="field">
+            <label>¿Cuánto tiempo lleva en funcionamiento?</label>
             <div class="radio-group">
-              <label><input type="radio" name="hosting" value="si"> Sí, incluirlo</label>
-              <label><input type="radio" name="hosting" value="propio"> No, tengo hosting propio</label>
-              <label><input type="radio" name="hosting" value="migrar"> Tengo hosting, quiero migrar</label>
+              <label><input type="radio" name="antiguedad" value="nueva"> Es nueva (aún no ha abierto)</label>
+              <label><input type="radio" name="antiguedad" value="menos1"> Menos de 1 año</label>
+              <label><input type="radio" name="antiguedad" value="1a3"> Entre 1 y 3 años</label>
+              <label><input type="radio" name="antiguedad" value="mas3"> Más de 3 años</label>
             </div>
           </div>
           <div class="field">
-            <label>¿Necesita registro de dominio?</label>
-            <div class="radio-group">
-              <label><input type="radio" name="dominio" value="si"> Sí, incluirlo</label>
-              <label><input type="radio" name="dominio" value="propio"> Ya tengo dominio</label>
-              <label><input type="radio" name="dominio" value="nuevo"> Quiero uno nuevo además del actual</label>
+            <label>Servicios o productos principales <span class="req">*</span></label>
+            <span class="hint">Lista los 3–5 servicios o productos que más ingresos generan o que quieres destacar. Ej:
+              "1. Clases de yoga en grupo · 2. Sesiones individuales de pilates · 3. Bono mensual ilimitado"</span>
+            <textarea name="servicios_principales" rows="4"></textarea>
+          </div>
+          <div class="field">
+            <label>Servicio o producto estrella</label>
+            <span class="hint">Si tuvieras que elegir solo uno que la web debe comunicar con máxima claridad, ¿cuál
+              sería?</span>
+            <input type="text" name="servicio_core">
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Modelo de negocio principal</label>
+              <div class="radio-group" style="flex-direction:column; gap:6px;">
+                <label><input type="radio" name="modelo_negocio" value="b2c"> B2C — vende a particulares</label>
+                <label><input type="radio" name="modelo_negocio" value="b2b"> B2B — vende a empresas</label>
+                <label><input type="radio" name="modelo_negocio" value="ambos"> Ambos</label>
+                <label><input type="radio" name="modelo_negocio" value="otro"> Otro</label>
+              </div>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>¿La empresa genera ingresos online actualmente?</label>
+              <div class="radio-group" style="flex-direction:column; gap:6px;">
+                <label><input type="radio" name="ingresos_online" value="no"> No, todo es presencial/offline</label>
+                <label><input type="radio" name="ingresos_online" value="algo"> Algo (redes, marketplaces…)</label>
+                <label><input type="radio" name="ingresos_online" value="si"> Sí, la web es canal principal</label>
+              </div>
             </div>
           </div>
         </div>
-        <div class="row-2" style="margin-top:12px;">
-          <div class="field">
-            <label>¿Requiere migración desde web actual?</label>
-            <div class="radio-group"><label><input type="radio" name="migracion" value="si"> Sí</label><label><input type="radio" name="migracion" value="no"> No</label><label><input type="radio" name="migracion" value="parcial"> Parcialmente</label></div>
-          </div>
-          <div class="field">
-            <label>¿Necesita maquetación de blog?</label>
-            <div class="radio-group"><label><input type="radio" name="blog_maquetacion" value="si"> Sí</label><label><input type="radio" name="blog_maquetacion" value="no"> No</label><label><input type="radio" name="blog_maquetacion" value="futuro"> En el futuro</label></div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">02</span>
+          <div>
+            <div class="section-title">Público Objetivo y Mercado</div>
+            <div class="section-desc">Quién compra, dónde está y contra quién compite.</div>
           </div>
         </div>
-        <div class="row-2" style="margin-top:12px;">
+        <div class="section-body">
           <div class="field">
-            <label>Número estimado de inserciones de contenido inicial</label>
-            <span class="hint">Páginas, posts de blog o fichas a introducir al lanzar. Ej: 8 páginas + 20 posts.</span>
-            <input type="text" name="inserciones_contenido" placeholder="Ej. 6 páginas, 0 posts iniciales">
+            <label>Perfil del cliente ideal <span class="req">*</span></label>
+            <span class="hint">Describe a tu cliente tipo: edad aproximada, situación, motivación, qué problema tiene
+              antes de encontrarte. Ej: "Mujer de 35–50 años, con trabajo, poco tiempo libre, que quiere ponerse en
+              forma."</span>
+            <textarea name="cliente_ideal" rows="4"></textarea>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Ámbito geográfico <span class="req">*</span></label>
+              <div class="check-group" style="flex-direction:column; gap:6px;">
+                <label><input type="checkbox" name="ambito[]" value="local"> Local (ciudad o provincia)</label>
+                <label><input type="checkbox" name="ambito[]" value="nacional"> Nacional (España)</label>
+                <label><input type="checkbox" name="ambito[]" value="hispanohablante"> Hispanohablante
+                  (Latinoamérica)</label>
+                <label><input type="checkbox" name="ambito[]" value="internacional"> Internacional (otros
+                  idiomas)</label>
+              </div>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Idiomas necesarios en la web</label>
+              <div class="check-group" style="flex-direction:column; gap:6px;">
+                <label><input type="checkbox" name="idiomas[]" value="es"> Español</label>
+                <label><input type="checkbox" name="idiomas[]" value="en"> Inglés</label>
+                <label><input type="checkbox" name="idiomas[]" value="fr"> Francés</label>
+                <label><input type="checkbox" name="idiomas[]" value="de"> Alemán</label>
+                <label><input type="checkbox" name="idiomas[]" value="otro"> Otro</label>
+              </div>
+            </div>
           </div>
           <div class="field">
-            <label>¿Quién gestionará el contenido tras el lanzamiento?</label>
+            <label>Competidores directos</label>
+            <span class="hint">Nombra 2–4 empresas o webs que hacen lo mismo. Incluye la URL si puedes.</span>
+            <textarea name="competidores_directos" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>Referentes o competidores aspiracionales</label>
+            <span class="hint">¿A qué empresa o web le gustaría parecerse, aunque no sea competencia directa? ¿Por
+              qué?</span>
+            <textarea name="competidores_aspiracionales" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>Ventaja competitiva real <span class="req">*</span></label>
+            <span class="hint">¿Por qué un cliente debería elegirte? Sé concreto, evita "mejor calidad" o "más
+              experiencia". Ej: "Somos los únicos en la ciudad que ofrecemos clases en grupos de máximo 6
+              personas."</span>
+            <textarea name="ventaja_competitiva" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">03</span>
+          <div>
+            <div class="section-title">Estrategia de Marca</div>
+            <div class="section-desc">Posicionamiento, valores y lo que la marca debe y no debe comunicar.</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label>Problema principal que resuelve la marca <span class="req">*</span></label>
+            <span class="hint">No el producto, sino el problema del cliente. Ej: "Los viajeros pierden horas buscando
+              información dispersa para organizar un viaje para ver a su equipo."</span>
+            <textarea name="problema_resuelve" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label>¿Qué lugar debe ocupar en la mente del cliente?</label>
+            <span class="hint">Completa: "Cuando alguien piensa en [categoría], quiero que piense primero en nosotros
+              porque ___."</span>
+            <textarea name="posicionamiento_mente" rows="3"></textarea>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Tres atributos que DEBEN definir la marca</label>
+              <span class="hint">Ej: Fiable · Cercano · Experto</span>
+              <input type="text" name="atributos_positivos" placeholder="Ej. Profesional · Innovador · Humano">
+            </div>
+            <div class="field">
+              <label>Atributos que NUNCA debe transmitir</label>
+              <span class="hint">Ej: "No debe parecer una agencia de viajes masiva y fría."</span>
+              <input type="text" name="atributos_negativos" placeholder="Ej. Genérico · Barato · Complicado">
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>¿Por qué existe la empresa más allá de vender?</label>
+              <span class="hint">El propósito de fondo. Ej: "Creemos que el deporte en vivo es una experiencia que
+                cambia personas."</span>
+              <textarea name="proposito" rows="3"></textarea>
+            </div>
+            <div class="field">
+              <label>¿Qué promesa hace la marca a sus clientes?</label>
+              <span class="hint">En una frase. Ej: "Te ayudamos a vivir el partido, no solo a verlo."</span>
+              <textarea name="promesa" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">04</span>
+          <div>
+            <div class="section-title">Identidad Visual</div>
+            <div class="section-desc">Nombre, logo, colores y la estética que se quiere comunicar.</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="row-2">
+            <div class="field">
+              <label>¿Se mantiene el nombre actual de la marca?</label>
+              <div class="radio-group">
+                <label><input type="radio" name="mantiene_nombre" value="si"> Sí</label>
+                <label><input type="radio" name="mantiene_nombre" value="no"> No, se cambia</label>
+                <label><input type="radio" name="mantiene_nombre" value="nueva"> Marca nueva</label>
+              </div>
+            </div>
+            <div class="field">
+              <label>¿Se plantea lema o eslogan?</label>
+              <input type="text" name="eslogan" placeholder="Ej. Tu viaje, tu partido, tu historia.">
+              <span class="hint">Déjalo vacío si aún no está definido.</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>¿Se dispone de logo o identidad visual existente?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="logo_estado" value="si_ok"> Sí, y se quiere mantener</label>
+              <label><input type="radio" name="logo_estado" value="si_renovar"> Sí, pero se quiere renovar</label>
+              <label><input type="radio" name="logo_estado" value="no"> No, se crea desde cero</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Sensaciones que debe transmitir la marca visualmente <span class="req">*</span></label>
+            <span class="hint">Elige varias o escribe las tuyas. Ej: "Moderna y limpia, sin perder calidez."</span>
+            <div class="check-group">
+              <label><input type="checkbox" name="sensaciones[]" value="profesional"> Profesional</label>
+              <label><input type="checkbox" name="sensaciones[]" value="moderno"> Moderno</label>
+              <label><input type="checkbox" name="sensaciones[]" value="calido"> Cálido</label>
+              <label><input type="checkbox" name="sensaciones[]" value="divertido"> Dinámico / Enérgico</label>
+              <label><input type="checkbox" name="sensaciones[]" value="lujo"> Premium / Exclusivo</label>
+              <label><input type="checkbox" name="sensaciones[]" value="minimalista"> Minimalista</label>
+              <label><input type="checkbox" name="sensaciones[]" value="cercano"> Cercano / Humano</label>
+              <label><input type="checkbox" name="sensaciones[]" value="tecnologico"> Tecnológico</label>
+              <label><input type="checkbox" name="sensaciones[]" value="natural"> Natural / Ecológico</label>
+              <label><input type="checkbox" name="sensaciones[]" value="otro"> Otro:</label>
+            </div>
+            <input type="text" name="sensaciones_otro" placeholder="Describe otras sensaciones…"
+              style="margin-top:8px;">
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Colores que considera afines a la marca</label>
+              <span class="hint">Nombres, referencias o hex. Ej: "Azul marino, blanco y un toque de naranja." o
+                "#003366"</span>
+              <input type="text" name="colores_afines" placeholder="Ej. Azul oscuro, blanco, naranja vibrante">
+            </div>
+            <div class="field">
+              <label>Colores a evitar</label>
+              <span class="hint">Ej: "Nada de verdes o amarillos chillones. El rojo me parece agresivo."</span>
+              <input type="text" name="colores_evitar" placeholder="Ej. Rojo, verde, colores muy saturados">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">05</span>
+          <div>
+            <div class="section-title">Diseño Web</div>
+            <div class="section-desc">Objetivos, estructura y estética de la web.</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label>Papel de la web en el negocio <span class="req">*</span></label>
             <div class="radio-group" style="flex-direction:column; gap:6px;">
-              <label><input type="radio" name="gestion_contenido" value="cliente"> El propio cliente (necesita formación)</label>
-              <label><input type="radio" name="gestion_contenido" value="agencia"> Vosotros (mantenimiento contratado)</label>
-              <label><input type="radio" name="gestion_contenido" value="ninguno"> Nadie, quedará estático</label>
+              <label><input type="radio" name="papel_web" value="brochure"> Escaparate / Presencia online (nadie compra,
+                solo busca información)</label>
+              <label><input type="radio" name="papel_web" value="captacion"> Captación de leads (el objetivo es que el
+                usuario contacte)</label>
+              <label><input type="radio" name="papel_web" value="venta"> Venta directa online (e-commerce o
+                reservas)</label>
+              <label><input type="radio" name="papel_web" value="seo"> Posicionamiento SEO y contenido (blog, guías,
+                tráfico orgánico)</label>
+              <label><input type="radio" name="papel_web" value="mixto"> Mixto (varios de los anteriores)</label>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Objetivo principal de la web (uno) <span class="req">*</span></label>
+              <span class="hint">Si solo pudiera ocurrir una cosa cuando alguien visita la web, ¿cuál sería?</span>
+              <textarea name="objetivo_web" rows="3"></textarea>
+            </div>
+            <div class="field">
+              <label>Acción clave que debe realizar el usuario <span class="req">*</span></label>
+              <span class="hint">¿Qué botón o acción concreta debe pulsar? Ej: "Reservar cita", "Pedir presupuesto",
+                "Comprar".</span>
+              <textarea name="accion_clave" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <label>Secciones o páginas que debe tener la web</label>
+            <span class="hint">Indica las que sabes seguro que necesita. Si tiene dudas, déjalo en blanco.</span>
+            <textarea name="secciones_web" rows="3"
+              placeholder="Ej. Home · Servicios · Quiénes somos · Blog · Contacto · Aviso Legal · RGPD"></textarea>
+          </div>
+          <div class="field">
+            <label>Webs de referencia estética <span class="req">*</span></label>
+            <span class="hint">Pon 2–3 URLs de webs cuyo diseño te guste. No hace falta que sean de tu
+              competencia.</span>
+            <textarea name="referencias_estetica" rows="3"
+              placeholder="Ej. https://linear.app · https://framer.com"></textarea>
+          </div>
+          <div class="field">
+            <label>Preferencias de estética visual general</label>
+            <div class="check-group">
+              <label><input type="checkbox" name="estetica[]" value="minimalista"> Minimalista, mucho espacio en
+                blanco</label>
+              <label><input type="checkbox" name="estetica[]" value="fotografica"> Protagonismo de la fotografía</label>
+              <label><input type="checkbox" name="estetica[]" value="colorido"> Colorido y vibrante</label>
+              <label><input type="checkbox" name="estetica[]" value="corporativo"> Corporativo y formal</label>
+              <label><input type="checkbox" name="estetica[]" value="organico"> Orgánico, texturas naturales</label>
+              <label><input type="checkbox" name="estetica[]" value="dark"> Dark mode / fondo oscuro</label>
+              <label><input type="checkbox" name="estetica[]" value="animado"> Con animaciones y movimiento</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Contenido disponible actualmente</label>
+            <span class="hint">Marca lo que ya tienes listo para entregar al inicio del proyecto.</span>
+            <div class="check-group">
+              <label><input type="checkbox" name="contenido[]" value="textos"> Textos escritos</label>
+              <label><input type="checkbox" name="contenido[]" value="fotos"> Fotografías propias</label>
+              <label><input type="checkbox" name="contenido[]" value="logo"> Logo en alta resolución</label>
+              <label><input type="checkbox" name="contenido[]" value="manual_marca"> Manual de marca</label>
+              <label><input type="checkbox" name="contenido[]" value="videos"> Vídeos</label>
+              <label><input type="checkbox" name="contenido[]" value="nada"> Nada, se crea todo desde cero</label>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">07</span>
-      <div>
-        <div class="section-title">SEO y Visibilidad Online</div>
-        <div class="section-desc">Solo si se incluye servicio de posicionamiento en el encargo.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="field">
-        <label>Palabras clave principales del negocio</label>
-        <span class="hint">¿Cómo crees que te buscan tus clientes en Google? Ej: "estudio de arquitectura Sevilla · reformas vivienda Sevilla"</span>
-        <textarea name="keywords_principales" rows="3" placeholder="Ej. viajes fútbol · paquetes viaje Champions League · alojamiento partido fútbol Madrid"></textarea>
-      </div>
-      <div class="field">
-        <label>¿Existe historial de SEO previo?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="seo_previo" value="no"> No, partimos de cero</label>
-          <label><input type="radio" name="seo_previo" value="google_analytics"> Sí, tenemos Google Analytics</label>
-          <label><input type="radio" name="seo_previo" value="search_console"> Sí, tenemos Search Console</label>
-          <label><input type="radio" name="seo_previo" value="ambos"> Sí, tenemos ambos</label>
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">06</span>
+          <div>
+            <div class="section-title">Requisitos Técnicos y de Desarrollo</div>
+            <div class="section-desc">Funcionalidades, integraciones y necesidades de infraestructura.</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="subsection">
+            <div class="subsection-title">Funcionalidades</div>
+            <div class="field">
+              <label>¿Qué funcionalidades debe incluir la web? <span class="req">*</span></label>
+              <span class="hint">Marca todo lo que necesites, aunque no estés seguro de si está incluido en el
+                presupuesto.</span>
+              <div class="check-group">
+                <label><input type="checkbox" name="funcionalidades[]" value="formulario_contacto"> Formulario de
+                  contacto</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="formulario_presupuesto"> Formulario de
+                  solicitud de presupuesto</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="blog"> Blog / noticias</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="tienda"> Tienda online
+                  (e-commerce)</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="reservas"> Sistema de reservas o
+                  citas</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="buscador"> Buscador interno</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="chat"> Chat en tiempo real</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="newsletter"> Suscripción a
+                  newsletter</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="area_privada"> Área privada / login de
+                  usuarios</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="mapa"> Mapa interactivo</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="galeria"> Galería de proyectos /
+                  portfolio</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="comparador"> Comparador de
+                  productos</label>
+                <label><input type="checkbox" name="funcionalidades[]" value="multiidioma"> Web multiidioma</label>
+              </div>
+            </div>
+          </div>
+          <div class="subsection">
+            <div class="subsection-title">Integraciones externas</div>
+            <div class="field">
+              <label>¿Necesita integrarse con herramientas externas?</label>
+              <span class="hint">Indica qué herramientas usáis ya en el negocio. Ej: "Usamos Mailchimp para newsletters
+                y HubSpot como CRM."</span>
+              <div class="check-group">
+                <label><input type="checkbox" name="integraciones[]" value="crm"> CRM (HubSpot, Salesforce…)</label>
+                <label><input type="checkbox" name="integraciones[]" value="email_marketing"> Email marketing
+                  (Mailchimp, Brevo…)</label>
+                <label><input type="checkbox" name="integraciones[]" value="pasarela_pago"> Pasarela de pago (Stripe,
+                  PayPal, Redsys…)</label>
+                <label><input type="checkbox" name="integraciones[]" value="erp"> ERP / facturación</label>
+                <label><input type="checkbox" name="integraciones[]" value="reservas_externas"> Plataforma de reservas
+                  (Calendly, Bookly…)</label>
+                <label><input type="checkbox" name="integraciones[]" value="google_analytics"> Google Analytics / Tag
+                  Manager</label>
+                <label><input type="checkbox" name="integraciones[]" value="redes_sociales"> Feed de redes
+                  sociales</label>
+                <label><input type="checkbox" name="integraciones[]" value="whatsapp"> WhatsApp Business</label>
+                <label><input type="checkbox" name="integraciones[]" value="ninguna"> Ninguna por ahora</label>
+              </div>
+            </div>
+            <div class="field" style="margin-top:12px;">
+              <label>Detalla las integraciones necesarias</label>
+              <textarea name="integraciones_detalle" rows="2"
+                placeholder="Ej. Tenemos Mailchimp con 3000 suscriptores y queremos sincronizarlo con el formulario de la web."></textarea>
+            </div>
+          </div>
+          <div class="subsection">
+            <div class="subsection-title">Tienda online (si aplica)</div>
+            <div class="row-3">
+              <div class="field"><label>Número aprox. de productos</label><input type="number" name="num_productos"
+                  placeholder="Ej. 50"></div>
+              <div class="field"><label>¿Gestión de stock?</label>
+                <div class="radio-group"><label><input type="radio" name="gestion_stock" value="si">
+                    Sí</label><label><input type="radio" name="gestion_stock" value="no"> No</label></div>
+              </div>
+              <div class="field"><label>¿Envío físico de productos?</label>
+                <div class="radio-group"><label><input type="radio" name="envio_fisico" value="si">
+                    Sí</label><label><input type="radio" name="envio_fisico" value="no"> No (digital/servicio)</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="subsection">
+            <div class="subsection-title">Infraestructura</div>
+            <div class="row-2">
+              <div class="field">
+                <label>¿Necesita servicio de hosting?</label>
+                <div class="radio-group">
+                  <label><input type="radio" name="hosting" value="si"> Sí, incluirlo</label>
+                  <label><input type="radio" name="hosting" value="propio"> No, tengo hosting propio</label>
+                  <label><input type="radio" name="hosting" value="migrar"> Tengo hosting, quiero migrar</label>
+                </div>
+              </div>
+              <div class="field">
+                <label>¿Necesita registro de dominio?</label>
+                <div class="radio-group">
+                  <label><input type="radio" name="dominio" value="si"> Sí, incluirlo</label>
+                  <label><input type="radio" name="dominio" value="propio"> Ya tengo dominio</label>
+                  <label><input type="radio" name="dominio" value="nuevo"> Quiero uno nuevo además del actual</label>
+                </div>
+              </div>
+            </div>
+            <div class="row-2" style="margin-top:12px;">
+              <div class="field">
+                <label>¿Requiere migración desde web actual?</label>
+                <div class="radio-group"><label><input type="radio" name="migracion" value="si"> Sí</label><label><input
+                      type="radio" name="migracion" value="no"> No</label><label><input type="radio" name="migracion"
+                      value="parcial"> Parcialmente</label></div>
+              </div>
+              <div class="field">
+                <label>¿Necesita maquetación de blog?</label>
+                <div class="radio-group"><label><input type="radio" name="blog_maquetacion" value="si">
+                    Sí</label><label><input type="radio" name="blog_maquetacion" value="no"> No</label><label><input
+                      type="radio" name="blog_maquetacion" value="futuro"> En el futuro</label></div>
+              </div>
+            </div>
+            <div class="row-2" style="margin-top:12px;">
+              <div class="field">
+                <label>Número estimado de inserciones de contenido inicial</label>
+                <span class="hint">Páginas, posts de blog o fichas a introducir al lanzar. Ej: 8 páginas + 20
+                  posts.</span>
+                <input type="text" name="inserciones_contenido" placeholder="Ej. 6 páginas, 0 posts iniciales">
+              </div>
+              <div class="field">
+                <label>¿Quién gestionará el contenido tras el lanzamiento?</label>
+                <div class="radio-group" style="flex-direction:column; gap:6px;">
+                  <label><input type="radio" name="gestion_contenido" value="cliente"> El propio cliente (necesita
+                    formación)</label>
+                  <label><input type="radio" name="gestion_contenido" value="agencia"> Vosotros (mantenimiento
+                    contratado)</label>
+                  <label><input type="radio" name="gestion_contenido" value="ninguno"> Nadie, quedará estático</label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="field">
-        <label>¿Tiene Google My Business / Perfil de empresa en Google?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="gmb" value="si_activo"> Sí y está activo</label>
-          <label><input type="radio" name="gmb" value="si_descuidado"> Sí pero está abandonado</label>
-          <label><input type="radio" name="gmb" value="no"> No</label>
-          <label><input type="radio" name="gmb" value="na"> No aplica (negocio sin local físico)</label>
+
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">07</span>
+          <div>
+            <div class="section-title">SEO y Visibilidad Online</div>
+            <div class="section-desc">Solo si se incluye servicio de posicionamiento en el encargo.</div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="field">
+            <label>Palabras clave principales del negocio</label>
+            <span class="hint">¿Cómo crees que te buscan tus clientes en Google? Ej: "estudio de arquitectura Sevilla ·
+              reformas vivienda Sevilla"</span>
+            <textarea name="keywords_principales" rows="3"
+              placeholder="Ej. viajes fútbol · paquetes viaje Champions League · alojamiento partido fútbol Madrid"></textarea>
+          </div>
+          <div class="field">
+            <label>¿Existe historial de SEO previo?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="seo_previo" value="no"> No, partimos de cero</label>
+              <label><input type="radio" name="seo_previo" value="google_analytics"> Sí, tenemos Google
+                Analytics</label>
+              <label><input type="radio" name="seo_previo" value="search_console"> Sí, tenemos Search Console</label>
+              <label><input type="radio" name="seo_previo" value="ambos"> Sí, tenemos ambos</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>¿Tiene Google My Business / Perfil de empresa en Google?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="gmb" value="si_activo"> Sí y está activo</label>
+              <label><input type="radio" name="gmb" value="si_descuidado"> Sí pero está abandonado</label>
+              <label><input type="radio" name="gmb" value="no"> No</label>
+              <label><input type="radio" name="gmb" value="na"> No aplica (negocio sin local físico)</label>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="section">
-    <div class="section-header">
-      <span class="section-num">08</span>
-      <div>
-        <div class="section-title">Plazos, Prioridades y Observaciones</div>
-        <div class="section-desc">Lo que más urge, restricciones de tiempo y cualquier cosa no cubierta.</div>
-      </div>
-    </div>
-    <div class="section-body">
-      <div class="field">
-        <label>¿Hay una fecha límite inamovible para el lanzamiento?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="fecha_limite" value="no"> No, hay flexibilidad</label>
-          <label><input type="radio" name="fecha_limite" value="si"> Sí, hay una fecha fija</label>
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">08</span>
+          <div>
+            <div class="section-title">Plazos, Prioridades y Observaciones</div>
+            <div class="section-desc">Lo que más urge, restricciones de tiempo y cualquier cosa no cubierta.</div>
+          </div>
         </div>
-        <input type="text" name="fecha_limite_detalle" style="margin-top:8px;" placeholder="Si es sí, indica la fecha y el motivo. Ej: Lanzamiento previsto para el 1 de septiembre por el inicio de temporada.">
+        <div class="section-body">
+          <div class="field">
+            <label>¿Hay una fecha límite inamovible para el lanzamiento?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="fecha_limite" value="no"> No, hay flexibilidad</label>
+              <label><input type="radio" name="fecha_limite" value="si"> Sí, hay una fecha fija</label>
+            </div>
+            <input type="text" name="fecha_limite_detalle" style="margin-top:8px;"
+              placeholder="Si es sí, indica la fecha y el motivo. Ej: Lanzamiento previsto para el 1 de septiembre por el inicio de temporada.">
+          </div>
+          <div class="field">
+            <label>Orden de prioridad de los elementos del proyecto</label>
+            <span class="hint">¿Qué es más urgente? Ej: "Primero necesito la identidad visual para usarla en redes, la
+              web puede esperar un mes."</span>
+            <textarea name="prioridades" rows="3"
+              placeholder="Ej. 1º Identidad Visual → 2º Prototipo → 3º Desarrollo web"></textarea>
+          </div>
+          <div class="field">
+            <label>Observaciones, restricciones o información adicional</label>
+            <span class="hint">Todo lo que no encajaba en las preguntas anteriores pero consideras importante.</span>
+            <textarea name="observaciones" rows="4"></textarea>
+          </div>
+        </div>
       </div>
-      <div class="field">
-        <label>Orden de prioridad de los elementos del proyecto</label>
-        <span class="hint">¿Qué es más urgente? Ej: "Primero necesito la identidad visual para usarla en redes, la web puede esperar un mes."</span>
-        <textarea name="prioridades" rows="3" placeholder="Ej. 1º Identidad Visual → 2º Prototipo → 3º Desarrollo web"></textarea>
+
+      <div class="submit-area">
+        <button type="submit" class="btn-submit">Enviar Briefing</button>
+        <div class="submit-note">Al enviar confirmas que la información proporcionada es correcta y autoriza su uso para
+          la planificación del proyecto.</div>
+        <div class="success-msg" id="success-msg">
+          ✓ Briefing recibido correctamente. Nos pondremos en contacto en un plazo de 24–48 horas.
+        </div>
       </div>
-      <div class="field">
-        <label>Observaciones, restricciones o información adicional</label>
-        <span class="hint">Todo lo que no encajaba en las preguntas anteriores pero consideras importante.</span>
-        <textarea name="observaciones" rows="4"></textarea>
-      </div>
-    </div>
+
+    </form>
   </div>
 
-  <div class="submit-area">
-    <button type="submit" class="btn-submit">Enviar Briefing</button>
-    <div class="submit-note">Al enviar confirmas que la información proporcionada es correcta y autoriza su uso para la planificación del proyecto.</div>
-    <div class="success-msg" id="success-msg">
-      ✓ Briefing recibido correctamente. Nos pondremos en contacto en un plazo de 24–48 horas.
-    </div>
-  </div>
+  <script>
+    const today = new Date();
+    document.getElementById("today-date").textContent =
+      "Fecha: " + today.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
+    document.getElementById("ref-code").textContent =
+      "REF: BRF-" + today.getFullYear() + (today.getMonth()+1).toString().padStart(2,"0") + today.getDate().toString().padStart(2,"0");
 
-</form>
-</div>
-
-<script>
-  const today = new Date();
-  document.getElementById("today-date").textContent =
-    "Fecha: " + today.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
-  document.getElementById("ref-code").textContent =
-    "REF: BRF-" + today.getFullYear() + (today.getMonth()+1).toString().padStart(2,"0") + today.getDate().toString().padStart(2,"0");
-
-  document.querySelectorAll("input[name=\"web_actual\"]").forEach(r => {
-    r.addEventListener("change", () => {
-      document.getElementById("web-actual-url-wrap").style.display =
-        (r.value !== "no" && r.checked) ? "block" : "none";
+    document.querySelectorAll("input[name=\"web_actual\"]").forEach(r => {
+      r.addEventListener("change", () => {
+        document.getElementById("web-actual-url-wrap").style.display =
+          (r.value !== "no" && r.checked) ? "block" : "none";
+      });
     });
-  });
 
-  const form = document.getElementById("briefing-form");
+    const form = document.getElementById("briefing-form");
 
-  form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-  
-  try {
-      const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbxhGQJFSbwL5MBnAlMNvFc0YDHmTQsKFSdvBbWKlM2k3BGpIeYq4zzuz3D1IYGBvG0-hw/exec",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      }
-    );
-  
-  console.log(response.status);
-  
-  const text = await response.text();
-  console.log(text);
-  
-  
-  const result = await response.json();
-  
-  if (result.success) {
-    document.getElementById("success-msg").style.display = "block";
-  
-    form.reset();
-  
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth"
-    });
-  }
-  
-  
-  } catch (error) {
-    console.error("ERROR COMPLETO:", error);
-  
-    alert(
-      "Error: " + error.message
-    );
-  }
+    form.addEventListener("submit", async (e) => {
+    e.preventDefault();
     
-  }
-  });
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    
+    try {
+        const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbxhGQJFSbwL5MBnAlMNvFc0YDHmTQsKFSdvBbWKlM2k3BGpIeYq4zzuz3D1IYGBvG0-hw/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+    
+    console.log(response.status);
+    
+    const text = await response.text();
+    console.log(text);
+       
+    const result = await response.json();
+    
+    if (result.success) {
+      document.getElementById("success-msg").style.display = "block";
+    
+      form.reset();
+    
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+        
+    } catch (error) {
+      console.error("ERROR COMPLETO:", error);
 
-
+      alert(
+        "Error: " + error.message
+      );
+    }
+    });
   
 </script>
 </body>
+
 </html>
