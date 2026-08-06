@@ -114,6 +114,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--t
   transition:all .15s
 }
 .btn-print-top:hover{border-color:var(--border2);color:var(--text)}
+.sidebar-toggle{
+  display:none;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);font-size:16px;width:34px;height:34px;
+  border-radius:var(--radius-sm);cursor:pointer;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
 .theme-toggle{
   background:var(--surface);border:1px solid var(--border);
   color:var(--text2);font-size:13px;padding:6px 10px;
@@ -331,8 +337,18 @@ select{
 .review-block p{font-size:13px;color:var(--text2);line-height:1.5}
 
 /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+.sidebar-overlay{
+  display:none;position:fixed;inset:0;top:var(--header-h);
+  background:rgba(0,0,0,.45);z-index:140;
+}
 @media(max-width:900px){
-  .sidebar{display:none}
+  .sidebar-toggle{display:flex}
+  .sidebar{
+    transform:translateX(-100%);transition:transform .25s ease;
+    z-index:150;box-shadow:0 0 40px rgba(0,0,0,.35);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.open{display:block}
   .main-content{margin-left:0;padding:24px 20px 80px}
   .progress-pill{display:none}
   .row-2,.row-3{grid-template-columns:1fr}
@@ -372,6 +388,7 @@ select{
 <!-- TOP BAR -->
 <header class="top-bar">
   <div class="top-bar-left">
+    <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Abrir navegación">☰</button>
     <a class="top-logo" href="#">
       <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
         <rect width="40" height="40" rx="9" fill="url(#gl)"/>
@@ -400,6 +417,7 @@ select{
 
 <!-- LAYOUT -->
 <div class="app-layout">
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <!-- SIDEBAR -->
   <nav class="sidebar">
@@ -1054,6 +1072,23 @@ if(themeBtn){
   try{ saved = localStorage.getItem(THEME_KEY); }catch(_){}
   applyTheme(saved === 'light' ? 'light' : 'dark');
 })();
+
+/* ── SIDEBAR MÓVIL (drawer) ────────────────────────────────── */
+const sidebarEl      = document.querySelector('.sidebar');
+const sidebarToggle  = document.getElementById('sidebar-toggle');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+function closeSidebar(){
+  sidebarEl.classList.remove('open');
+  sidebarOverlay.classList.remove('open');
+}
+function toggleSidebar(){
+  sidebarEl.classList.toggle('open');
+  sidebarOverlay.classList.toggle('open');
+}
+sidebarToggle?.addEventListener('click', toggleSidebar);
+sidebarOverlay?.addEventListener('click', closeSidebar);
+sidebarEl?.querySelectorAll('.nav-item').forEach(el => el.addEventListener('click', closeSidebar));
 
 /* ── REF & DATE ─────────────────────────────────────────────── */
 const today = new Date();
